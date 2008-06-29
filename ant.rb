@@ -1,5 +1,15 @@
 class Ant
 
+  def initialize(options={})
+    @id        = Ant.next_id
+    @color     = options[:color]
+    @state     = options[:state] || 0
+    @resting   = options[:resting] || 0
+    @direction = options[:direction] || :east
+    @position  = options[:position]
+    self.class.all[@id] = self
+  end
+
   def self.next_id
     @id ||= -1
     @id += 1
@@ -21,15 +31,6 @@ class Ant
     !!all[ant_id]
   end
 
-  def initialize(options={})
-    @id        = Ant.next_id
-    @color     = options[:color]
-    @state     = options[:state] || 0
-    @resting   = options[:resting] || 0
-    @direction = options[:direction] || :east
-    self.class.all[@id] = self
-  end
-
   def has_food?
     !!@food
   end
@@ -47,7 +48,7 @@ class Ant
   end
 
   attr_reader :id, :color
-  attr_accessor :state, :resting, :direction
+  attr_accessor :state, :resting, :direction, :position
 
 end
 

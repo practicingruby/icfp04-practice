@@ -2,7 +2,7 @@ require "cell"
 require "pp"
 
 class Map
-  
+
   DIRECTIONS = [:east, :south_east, :south_west, :west, :north_west, :north_east]
 
   def self.parse(file)
@@ -15,10 +15,10 @@ class Map
           map[x,y].rocky = true
         when "+"
           map[x,y].red_anthill = true
-          map[x,y].ant = Ant.new(:color => :red)
+          map[x,y].ant = Ant.new(:color => :red, :position => [x,y])
         when "-"
           map[x,y].black_anthill = true
-          map[x,y].ant = Ant.new(:color => :black)
+          map[x,y].ant = Ant.new(:color => :black, :position => [x,y])
         when /\d/
           map[x,y].food = Integer(cell)
         end
@@ -52,9 +52,7 @@ class Map
   end
 
   def find_ant(ant_id)
-    traverse do |cell, pos|
-      break pos if cell.ant? && cell.ant.id == ant_id
-    end
+    Ant.find(ant_id).position
   end
 
   def kill_ant_at(position)
@@ -91,7 +89,7 @@ class Map
 
   def self.adjacent_cell(pos,dir)
     x,y = pos
-    case(dir)
+    cache[[:adjacent_cell, pos, dir]] ||= case(dir)
     when :east 
       [x+1,y]
     when :south_east
@@ -116,7 +114,7 @@ class Map
   end
 
   def self.sensed_cell(pos, dir, sense_dir)
-    case(sense_dir)
+    @cache[[:sensed_cell, pos, dir, sense_dir]] ||= case(sense_dir)
     when :here
       pos
     when :ahead
@@ -126,6 +124,10 @@ class Map
     when :right_ahead
       adjacent_cell(pos,right_of(dir))
     end
+  end
+
+  def self.cache
+    @cache = {}
   end
 
   attr_reader :data

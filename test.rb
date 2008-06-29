@@ -4,7 +4,7 @@ puts "random seed: 12345\n\n"
 ant = AntInterpreter.new("sample.ant", "sample.ant", "tiny.world")
 #ant.watch << 11
 
-10001.times do |i|
+10000.times do |i|
   #STDERR.puts i
   puts "After round #{i}..."
 #=begin

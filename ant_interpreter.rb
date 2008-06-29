@@ -92,6 +92,7 @@ class AntInterpreter
     @map[options[:pos]].remove_ant 
     @map[dest].ant = options[:ant]
     options[:ant].resting = 14
+    options[:ant].position = dest
     @map.update_surrounded_ants(dest)
 
     return true
