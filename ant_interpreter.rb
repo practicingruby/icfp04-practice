@@ -99,7 +99,7 @@ class AntInterpreter
   end
 
   def flip(options)
-    @randomizer.random(options[:probability]).zero? 
+    rand(options[:probability]).zero? 
   end
 
 end
